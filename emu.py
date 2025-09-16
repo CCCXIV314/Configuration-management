@@ -2,6 +2,7 @@ import shlex
 import os
 import re
 import platform
+
 vfs_name = 'home$'
 exit_cmd = 'exit'
 
