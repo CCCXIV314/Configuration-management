@@ -7,9 +7,6 @@ vfs_name = 'home$'
 exit_cmd = 'exit'
 
 def expand_env_vars(command: str, env: dict = None) -> str:
-    """
-    Раскрывает переменные окружения в строке для UNIX-подобных и Windows систем.
-    """
     if env is None:
         env = dict(os.environ)
 
