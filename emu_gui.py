@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import scrolledtext, font
-from emu import act
+from emu import act, init_config, execute_startup_script, find_default_start_script
 
 vfs_name = 'home$'
 
@@ -55,8 +55,12 @@ class TerminalGUI:
 
     def print_output(self, text):
         """Вывод текста в текстовую область"""
+        if text is None:
+            return
+        # добавляем перенос строки если требуется
+        text_to_insert = f"{text}\n" if not str(text).endswith("\n") else text
         self.output_area.config(state=tk.NORMAL)
-        self.output_area.insert(tk.END, text)
+        self.output_area.insert(tk.END, text_to_insert)
         self.output_area.see(tk.END)
         self.output_area.config(state=tk.DISABLED)
 
@@ -66,7 +70,7 @@ class TerminalGUI:
         self.command_entry.delete(0, tk.END)
 
         # Выводим команду в текстовую область
-        self.print_output(f"home$ {command}\n")
+        self.print_output(f"home$ {command}")
 
         # Обрабатываем команду с помощью функции act()
         result = act(command)
@@ -76,10 +80,18 @@ class TerminalGUI:
             self.root.quit()
         # Если есть результат - выводим его
         elif result:
-            self.print_output(f"{result}\n")
+            self.print_output(result)
 
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = TerminalGUI(root)
+
+    init_config(args_list=None, output_func=app.print_output)
+
+    find_default_start_script()
+
+    execute_startup_script(output_func=app.print_output)
+
     root.mainloop()
+

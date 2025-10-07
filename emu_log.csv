@@ -1,0 +1,41 @@
+timestamp,command,error_message
+2025-10-01T17:41:06.190191, set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,
+2025-10-01T17:41:06.193515, set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management, set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management: command not found
+2025-10-01T17:41:26.146979,set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,
+2025-10-01T17:41:26.147653,set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management: command not found
+2025-10-01T17:41:55.200464,set parameter --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,
+2025-10-01T17:46:15.225245,set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,
+2025-10-01T17:46:15.226219,set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,set --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management: command not found
+2025-10-01T17:46:26.839600,set parameter --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,
+2025-10-01T17:48:37.603772,set parameter --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,
+2025-10-01T17:50:00.459618,set parameter --stscript-path C:\Users\CCCXIV\PycharmProjects\ConfManagement\Configuration-management,
+2025-10-06T14:40:07.584735,$HOME,
+2025-10-06T14:40:07.588898,$HOME,$HOME: command not found
+2025-10-06T14:40:53.811615,set parameter --stscript-path /,
+2025-10-06T15:20:54.862578,set parameter --stscript-path /,
+2025-10-06T15:21:11.138950,$HOME,
+2025-10-06T15:33:02.751644,ls qq ww ee,
+2025-10-06T15:33:02.757243,cd qq ww ee,
+2025-10-06T15:33:02.760519,$HOME,
+2025-10-06T15:33:02.766157,qwe,qwe: command not found
+2025-10-06T19:15:16.874504,ls qq ww ee,
+2025-10-06T19:15:16.876415,cd qq ww ee,
+2025-10-06T19:15:16.877528,$HOME,
+2025-10-06T19:15:16.878853,qwe,qwe: command not found
+2025-10-06T19:16:00.952074,ls qq ww ee,
+2025-10-06T19:16:00.953385,cd qq ww ee,
+2025-10-06T19:16:00.954501,$HOME,
+2025-10-06T19:16:00.955816,qwe,qwe: command not found
+2025-10-07T12:03:55.359427,$HOME,
+2025-10-07T12:04:02.927209,cd sss,
+2025-10-07T12:04:16.255820,ls xxx,
+2025-10-07T12:06:42.066089,f,f: command not found
+2025-10-07T12:06:48.867967,%USERNAME%,
+2025-10-07T12:09:51.671544,ls qq ww ee,
+2025-10-07T12:09:51.673995,cd qq ww ee,
+2025-10-07T12:09:51.676250,$HOME,
+2025-10-07T12:09:51.679081,qwe,qwe: command not found
+2025-10-07T12:10:04.954476,ls qq ww ee,
+2025-10-07T12:10:04.954476,cd qq ww ee,
+2025-10-07T12:10:04.954476,$HOME,
+2025-10-07T12:10:04.961430,qwe,qwe: command not found

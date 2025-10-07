@@ -1,0 +1,4 @@
+ls qq ww ee
+cd qq ww ee
+$HOME
+qwe
