@@ -89,6 +89,11 @@ if __name__ == "__main__":
 
     init_config(args_list=None, output_func=app.print_output)
 
+    import vfs as vfs_module
+    import emu
+
+    emu.vfs = getattr(vfs_module, "vfs", None)
+
     find_default_start_script()
 
     execute_startup_script(output_func=app.print_output)

@@ -1,0 +1,9 @@
+path,type,content
+/,dir,
+/docs,dir,
+/docs/readme.txt,file,Main readme
+/docs/manual.txt,file,User manual
+/images,dir,
+/images/logo.png,file,PNGDATA123
+/data,dir,
+/data/config.json,file,"{""version"": 2, ""enabled"": true}"

@@ -1,0 +1,10 @@
+path,type,content
+/,dir,
+/projects,dir,
+/projects/app,dir,
+/projects/app/src,dir,
+/projects/app/src/main.py,file,print('Hello from app')
+/projects/app/assets,dir,
+/projects/app/assets/logo.svg,file,<svg>...</svg>
+/projects/lib,dir,
+/projects/lib/utils.py,file,def util(): pass

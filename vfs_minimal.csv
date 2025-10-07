@@ -1,0 +1,4 @@
+path,type,content
+/,dir,
+/docs,dir,
+/docs/readme.txt,file,Hello

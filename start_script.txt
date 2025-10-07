@@ -1,4 +1,20 @@
-ls qq ww ee
-cd qq ww ee
-$HOME
-qwe
+ls /
+
+cd /docs
+ls
+
+cd /
+ls
+
+cd /projects/app
+ls
+cd src
+ls
+cd ../assets
+ls
+
+cd /no_such_folder
+ls
+
+cd /
+ls
