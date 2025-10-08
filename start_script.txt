@@ -1,11 +1,13 @@
+# basic listing and cd
 ls /
-
 cd /docs
 ls
 
+# back to root
 cd /
 ls
 
+# deep navigation
 cd /projects/app
 ls
 cd src
@@ -13,8 +15,23 @@ ls
 cd ../assets
 ls
 
-cd /no_such_folder
-ls
+# find usages
+# find from root all .py files
+find / *.py
+# find from /projects for names containing 'main'
+find /projects *main*
+# find from cwd by pattern
+cd /
+find projects *app*
 
+# cat usages
+cat /docs/readme.txt
+cat /projects/app/src/main.py
+
+# error cases: cat non-existent and find in non-existent path
+cat /no_such_file.txt
+find /no_such_folder *.txt
+
+# return to root and final listing
 cd /
 ls
