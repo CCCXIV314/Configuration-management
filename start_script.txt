@@ -16,11 +16,8 @@ cd ../assets
 ls
 
 # find usages
-# find from root all .py files
 find / *.py
-# find from /projects for names containing 'main'
 find /projects *main*
-# find from cwd by pattern
 cd /
 find projects *app*
 
@@ -28,10 +25,29 @@ find projects *app*
 cat /docs/readme.txt
 cat /projects/app/src/main.py
 
-# error cases: cat non-existent and find in non-existent path
-cat /no_such_file.txt
-find /no_such_folder *.txt
+# rmdir tests
+# 1) удачное удаление пустой директории (эта директория должна быть в CSV как пустая)
+ls /
+ls /tmpdir
+rmdir /tmpdir
+ls /
 
-# return to root and final listing
+# 2) попытка удалить не пустую директорию -> ошибка "Directory not empty"
+rmdir /projects/app
+
+# 3) попытка удалить файл -> ошибка "<path> is not a directory"
+rmdir /docs/readme.txt
+
+# 4) попытка удалить несуществующую -> ошибка "No such directory"
+rmdir /no_such
+
+# 5) относительное удаление: переходим в /projects и удаляем пустой дочерний каталог
+cd /projects
+ls
+rmdir emptychild
+ls
 cd /
 ls
+
+# error cases for rmdir (root)
+rmdir /

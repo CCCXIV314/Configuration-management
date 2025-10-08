@@ -99,4 +99,3 @@ if __name__ == "__main__":
     execute_startup_script(output_func=app.print_output)
 
     root.mainloop()
-

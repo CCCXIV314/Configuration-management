@@ -8,3 +8,5 @@ path,type,content
 /projects/app/assets/logo.svg,file,<svg>...</svg>
 /projects/lib,dir,
 /projects/lib/utils.py,file,def util(): pass
+/tmpdir,dir,
+/projects/emptychild,dir,

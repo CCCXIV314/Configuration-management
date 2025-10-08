@@ -80,7 +80,6 @@ class VirtualFileSystem:
         if path is None or path == "":
             return self.cwd
 
-        # стартовая точка
         if path.startswith("/"):
             node = self.root
             parts = self._norm_parts(path)
@@ -95,7 +94,6 @@ class VirtualFileSystem:
                 if node.parent is not None:
                     node = node.parent
                 else:
-                    # остаёмся в корне
                     node = self.root
                 continue
             if not node.is_dir:
@@ -120,7 +118,7 @@ class VirtualFileSystem:
             return f"No such directory: {path or self.get_cwd_path()}"
         if not node.is_dir:
             return f"{path or node.path()} is not a directory"
-        # Отсортируем имена для стабильного вывода; не включаем пустые имена.
+        # Отсортируем имена для стабильного вывода; не включаем пустые имена
         names = sorted(node.children.keys())
         if not names:
             return ""
@@ -140,6 +138,35 @@ class VirtualFileSystem:
         self.cwd = node
         return self.get_cwd_path()
 
+    def remove_dir(self, path):
+        """
+        Удаляет пустую директорию по данному пути (абсолютному или относительному).
+        Возвращает строку с сообщением об ошибке или подтверждение удаления.
+        """
+        # Разрешаем None/пустой как cwd — в таком случае нельзя удалять cwd, запрещаем
+        if path is None or path == "":
+            return "Usage: rmdir <directory>"
+
+        # Получаем узел
+        node = self.get_node(path)
+        if not node:
+            return f"No such directory: {path}"
+        if not node.is_dir:
+            return f"{path} is not a directory"
+        # Нельзя удалить корень
+        if node is self.root:
+            return "Cannot remove root directory"
+        # Нельзя удалить, если есть дети
+        if node.children and len(node.children) > 0:
+            return "Directory not empty"
+        # Удаляем из родителя
+        parent = node.parent
+        if parent and node.name in parent.children:
+            del parent.children[node.name]
+            return f"Removed directory: {node.path()}"
+        else:
+            return f"Failed to remove: {path}"
+
     def get_cwd_path(self):
         """Возвращает строковый путь текущей директории."""
         return self.cwd.path()
@@ -158,8 +185,6 @@ class VirtualFileSystem:
     @staticmethod
     def is_base64(s):
         try:
-            # base64.b64decode часто не бросает исключение для произвольной строки,
-            # поэтому проверим, что декодирование и обратное кодирование совпадает (более строгая проверка)
             if not s:
                 return False
             decoded = base64.b64decode(s)

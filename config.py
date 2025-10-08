@@ -53,7 +53,6 @@ def find_default_start_script():
     module_dir = os.path.dirname(os.path.abspath(__file__))
     candidate = os.path.join(module_dir, "start_script.txt")
     if os.path.exists(candidate):
-        # не меняем предыдущий debug-вывод — он уже показал None, но всё же выполним скрипт
         stscript_path = candidate
 
 def expand_env_vars(command: str, env: dict = None) -> str:
@@ -71,8 +70,7 @@ def expand_env_vars(command: str, env: dict = None) -> str:
         env['HOME'] = env['USERPROFILE']
 
     def replace_var(match):
-        # group(1) — %VAR% via first regex, group(2) or group(3) for $VAR and ${VAR}
-        if match.group(1):  # %VAR%
+        if match.group(1):
             var_name = match.group(1)
             return env.get(var_name, "").replace('\\', '/')
         if match.group(2) or match.group(3):  # $VAR or ${VAR}
