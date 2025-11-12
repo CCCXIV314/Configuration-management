@@ -1,6 +1,6 @@
- {
+{
     "package_name": "requests",
-    "repo_url": "https://pypi.org/pypi",
+    "repo_url": "pypi.org/pypi/",
     "test_mode": false,
     "ascii_tree": true,
     "max_depth": 3

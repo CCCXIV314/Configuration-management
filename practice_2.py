@@ -1,5 +1,7 @@
 import argparse
 import json
+import urllib.request
+import re
 import os
 import sys
 
@@ -24,47 +26,98 @@ class PackageAnalyzer:
         except json.JSONDecodeError:
             raise Exception(f"Ошибка парсинга JSON в файле: {config_path}")
 
-        # Обновление конфигурации пользовательскими значениями
         for key, value in user_config.items():
             if key in self.config:
                 self.config[key] = value
-            else:
-                print(f"Предупреждение: неизвестный параметр '{key}' в конфигурации")
 
     def validate_config(self):
         """Валидация параметров конфигурации"""
         errors = []
 
-        # Проверка обязательных параметров
         if not self.config['package_name']:
-            errors.append("Не указано имя пакета (package_name)")
-
+            errors.append("Не указано имя пакета")
         if not self.config['repo_url']:
-            errors.append("Не указан URL репозитория или путь к файлу (repo_url)")
-
-        # Проверка максимальной глубины
-        if not isinstance(self.config['max_depth'], int) or self.config['max_depth'] < 1:
-            errors.append("max_depth должен быть целым числом больше 0")
-
-        # Проверка булевых параметров
-        for bool_param in ['test_mode', 'ascii_tree']:
-            if not isinstance(self.config[bool_param], bool):
-                errors.append(f"{bool_param} должен быть true или false")
+            errors.append("Не указан URL репозитория или путь к файлу")
 
         if errors:
             raise Exception("Ошибки конфигурации:\n- " + "\n- ".join(errors))
 
-    def print_config(self):
-        """Вывод всех параметров в формате ключ-значение"""
-        print("Текущая конфигурация:")
-        for key, value in self.config.items():
-            print(f"  {key}: {value}")
-        print("-" * 40)
+    def get_dependencies(self):
+        """Получение прямых зависимостей пакета"""
+        package_name = self.config['package_name']
+
+        if self.config['test_mode']:
+            # Режим тестового репозитория - работа с локальным файлом
+            dependencies = self.get_dependencies_from_file()
+        else:
+            # Режим онлайн - работа с PyPI
+            dependencies = self.get_dependencies_from_pypi(package_name)
+
+        # Вывод прямых зависимостей (требование этапа 2)
+        print("Прямые зависимости пакета '{}':".format(package_name))
+        if dependencies:
+            for dep in dependencies:
+                print(f"  - {dep}")
+        else:
+            print("  Зависимости не найдены")
+
+        return dependencies
+
+    def get_dependencies_from_pypi(self, package_name):
+        """Получение зависимостей из PyPI"""
+        try:
+            # Формируем URL на основе конфигурации
+            if self.config['repo_url'].startswith(('http://', 'https://')):
+                url = f"{self.config['repo_url']}{package_name}/json"
+            else:
+                url = f"https://{self.config['repo_url']}{package_name}/json"
+
+            with urllib.request.urlopen(url) as response:
+                data = json.loads(response.read().decode('utf-8'))
+
+            return self.parse_dependencies(data)
+
+        except Exception as e:
+            print(f"Ошибка при получении зависимостей: {e}")
+            return []
+
+    def get_dependencies_from_file(self):
+        """Получение зависимостей из тестового файла"""
+        try:
+            with open(self.config['repo_url'], 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return self.parse_dependencies(data)
+        except Exception as e:
+            print(f"Ошибка при чтении тестового файла: {e}")
+            return []
+
+    def parse_dependencies(self, package_data):
+        """Парсинг зависимостей из данных пакета"""
+        dependencies = []
+
+        if 'info' in package_data and 'requires_dist' in package_data['info']:
+            requires_dist = package_data['info']['requires_dist']
+
+            if requires_dist:
+                pattern = r"^([a-zA-Z\d_-]+)\s*"
+                for dep in requires_dist:
+                    # Игнорируем зависимости с условиями (extra)
+                    if 'extra' in dep:
+                        continue
+
+                    # Извлекаем имя пакета
+                    match = re.match(pattern, dep.split(';')[0].strip())
+                    if match:
+                        package_name = match.group(1)
+                        if package_name not in dependencies:
+                            dependencies.append(package_name)
+
+        return dependencies
 
     def command_line(self):
-        """Обработка командной строки и конфигурации"""
+        """Обработка командной строки"""
         parser = argparse.ArgumentParser(
-            description='CLI-приложение для анализа пакетов'
+            description='CLI-приложение для анализа зависимостей пакетов'
         )
 
         parser.add_argument('--config', '-c',
@@ -75,15 +128,18 @@ class PackageAnalyzer:
         args = parser.parse_args()
 
         try:
-            # Загрузка и валидация конфигурации
+            # Загрузка конфигурации
             self.load_config(args.config)
             self.validate_config()
 
-            # Вывод параметров (требование этапа 1)
-            self.print_config()
+            # Вывод конфигурации (этап 1)
+            print("Конфигурация:")
+            for key, value in self.config.items():
+                print(f"  {key}: {value}")
+            print("-" * 40)
 
-            # Здесь будет основная логика анализа пакетов
-            print("Конфигурация успешно загружена. Начинаем анализ...")
+            # Получение и вывод зависимостей (этап 2)
+            self.get_dependencies()
 
         except Exception as e:
             print(f"Ошибка: {e}")
